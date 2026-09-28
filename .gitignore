@@ -1,0 +1,34 @@
+# Pipeline outputs (activations, trajectories, baseline/divergence JSON)
+outputs/
+*.pt
+
+# Slurm job logs
+*.log
+slurm-*.out
+
+# Virtual environments
+venv*/
+.venv/
+env/
+
+# Hugging Face cache (if HF_HOME is pointed inside the repo)
+hf_cache/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+
+
+latent_reasoning_counterfactuals_methodology.pdf

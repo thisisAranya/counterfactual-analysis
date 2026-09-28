@@ -1,0 +1,31 @@
+# Shared configuration for all stages of the latent reasoning counterfactual pipeline.
+# Later stages add their own sections below.
+
+model:
+  name: Qwen/Qwen2.5-7B-Instruct
+  dtype: bfloat16
+
+data:
+  dataset: my_dataset.json
+  split: original          # which side of each pair to use: original | counterfactual
+  num_queries: 20
+
+prompt:
+  system: "You are a helpful assistant."
+  instruction: "Answer the following question. Think step by step, explaining your reasoning, and then give your final answer on the last line in the form \"Final answer: <answer>\".\n\nQuestion: "
+
+paths:
+  output_root: outputs
+
+# Stage 1: baseline activations h and reasoning (R, A, Z) -- Algorithm 1, steps 1-2.
+stage_1:
+  max_new_tokens: 512
+  repetition_penalty: 1.0      # Qwen's default generation_config uses 1.05; 1.0 = pure greedy
+  trajectory_dtype: bfloat16   # Z(Q) storage dtype (model computes in bf16, so this is lossless)
+  smoke:
+    num_queries: 1
+    max_new_tokens: 64
+  # divergence.py: suggested horizon K = percentile(first divergence) + margin, rounded to 8
+  divergence:
+    percentile: 90
+    margin: 16

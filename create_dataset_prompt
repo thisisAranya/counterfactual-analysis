@@ -1,0 +1,298 @@
+You are creating a research dataset for evaluating how language models’
+reasoning changes when a small, meaningful detail in an everyday situation
+changes.
+
+Create 20 original–counterfactual QA pairs.
+
+Each pair must contain:
+1. An original query.
+2. A reference reasoning explanation for the original query.
+3. The original final answer.
+4. A minimally edited counterfactual query.
+5. A reference reasoning explanation for the counterfactual query.
+6. A different counterfactual final answer.
+7. An annotation identifying exactly what changed and why it matters.
+
+These are reference explanations of valid reasoning, not claims about a
+model’s hidden internal reasoning.
+
+TASK DEFINITION
+
+A query consists of a short situation followed by a question.
+
+The counterfactual query describes a plausible alternative version of the
+same situation. Change one decisive detail so that the correct answer to
+the SAME question changes.
+
+Target structure:
+
+Original situation + question
+→ original reasoning
+→ original answer
+
+Minimally changed situation + same question
+→ adjusted reasoning
+→ different answer
+
+The counterfactual is an alternative situation. It is not a false statement
+that the model must memorize, an incorrect answer, or a deliberately flawed
+explanation.
+
+CONTENT REQUIREMENTS
+
+Use everyday situations that require reasoning but no specialist knowledge.
+
+Produce 4 pairs in each of these 5 categories:
+
+1. Beliefs and information access
+   Examples: whether someone witnessed an event, received a message, or
+   learned that an object had moved.
+
+2. Object locations and physical states
+   Examples: moving containers, transferring objects, opening or closing
+   access, or changes to an object's state.
+
+3. Rules, permissions, and prerequisites
+   Examples: access conditions, eligibility, explicit household rules, or
+   whether a required step was completed.
+
+4. Temporal and event-order reasoning
+   Examples: whether a message arrived before a departure or whether an
+   action happened before a relevant change.
+
+5. Causal reasoning with explicit mechanisms
+   Examples: a switch controls a lamp only when power is available, or an
+   alarm activates only when a stated condition is satisfied.
+
+Use varied people, objects, settings, sentence structures, and questions.
+Do not create the same logical template repeatedly with different names.
+
+Keep the first batch easy to moderate:
+- Each query should usually contain 3–6 short sentences, including the question.
+- Each solution should require 2–4 meaningful inference steps.
+- Avoid problems whose answer can simply be copied from one sentence.
+- Avoid complicated nesting of beliefs or many interacting rules.
+
+EXCLUDE
+
+Do not include:
+- Mathematics or numerical calculations.
+- Medical, legal, financial, or other specialist questions.
+- Historical or encyclopedic trivia.
+- Invented replacements for real-world facts, such as changing a real
+  author's death date.
+- Impossible worlds or changes to the laws of physics.
+- Subjective opinions, moral judgments, or personality stereotypes.
+- Unstated cultural assumptions.
+- Questions with multiple reasonable answers.
+- Questions requiring guesses about what a person probably wants.
+- Long reading-comprehension passages.
+- Deliberately incorrect reasoning.
+- Mere paraphrases that preserve the answer.
+
+COUNTERFACTUAL EDIT REQUIREMENTS
+
+For every pair:
+
+1. Keep the final question exactly the same.
+2. Keep names, answer-relevant entities, and unrelated background unchanged.
+3. Change one decisive event, condition, observation, or relation.
+4. Make the edit by replacing one contiguous span of the original query.
+   The span may be a phrase or one sentence.
+5. Everything outside that span must remain identical.
+6. The original span must appear exactly once in the original query.
+7. The edit must cause a semantic change, not just a wording change.
+8. Both versions must remain coherent and independently answerable.
+9. The correct answer must change in meaning, not merely in spelling,
+   wording, or answer-option position.
+10. Do not change the question's polarity just to flip the answer.
+11. Do not directly insert the final answer as the edit.
+12. Do not introduce an unrelated second change.
+
+Prefer the smallest edit that produces a clear answer change.
+Do not force a one-word edit if a short phrase is needed for clarity.
+
+Each query must stand alone. Do not include phrases such as:
+- "Unlike the original..."
+- "In this counterfactual..."
+- "Assume the previous answer is wrong..."
+- "New fact:"
+- "The answer should now be..."
+
+REASONING REQUIREMENTS
+
+Provide a concise reference explanation for EACH version.
+
+Each explanation must:
+- Contain 2–4 numbered steps, represented as a JSON array.
+- Identify the relevant evidence.
+- Explain the intermediate inference.
+- Connect that inference to the final answer.
+- Use only information in that query and ordinary, uncontroversial knowledge.
+- Avoid adding unstated events or intentions.
+- Avoid circular reasoning.
+- Avoid filler such as "Let's think carefully" or "Clearly."
+- Be understandable without seeing the other version.
+
+The explanations should have comparable detail.
+
+At least one intermediate inference must change because of the edit.
+Do not simply copy the original explanation and replace the final answer.
+
+A different reasoning algorithm is not required. What must change is the
+evidence-dependent inference—for example, whether a character updates their
+belief or whether a prerequisite is satisfied.
+
+FINAL ANSWER REQUIREMENTS
+
+Use short, unambiguous answers:
+- Prefer an entity, location, action, or state.
+- Usually use 1–8 words.
+- Use yes/no only where it is the natural answer format.
+- Do not include the explanation inside the final_answer field.
+- Keep the answer format consistent within each pair.
+
+Make both versions equally natural. Do not systematically make the original
+version positive, successful, permitted, or true and the counterfactual
+version negative, unsuccessful, forbidden, or false.
+
+ILLUSTRATIVE EXAMPLE
+
+This example demonstrates the desired structure. Do not include it in the
+generated dataset or create superficial rewrites of it.
+
+Original query:
+"Maya puts her keys in the desk drawer. Sam later moves the keys from the
+drawer into the blue bag. Maya does not see Sam move the keys. She receives
+no other information about their location. Where does Maya believe her
+keys are?"
+
+Original reasoning:
+1. Maya initially knows that the keys are in the desk drawer.
+2. She neither observes the move nor receives information about it, so she
+   has no basis for updating that belief.
+3. Her belief therefore remains that the keys are in the desk drawer.
+
+Original final answer:
+"The desk drawer"
+
+Counterfactual query:
+"Maya puts her keys in the desk drawer. Sam later moves the keys from the
+drawer into the blue bag. Maya sees Sam move the keys. She receives
+no other information about their location. Where does Maya believe her
+keys are?"
+
+Counterfactual reasoning:
+1. Maya initially knows that the keys are in the desk drawer.
+2. She observes Sam move them into the blue bag, so she updates her belief.
+3. She therefore believes the keys are in the blue bag.
+
+Counterfactual final answer:
+"The blue bag"
+
+Changed span:
+"Maya does not see Sam move the keys."
+→
+"Maya sees Sam move the keys."
+
+Decisive difference:
+Whether Maya has access to the information needed to update her belief.
+
+QUALITY CHECKS BEFORE OUTPUT
+
+Review every pair against all of the following:
+
+A. Independent solvability
+   Solve each query using only its own text. Does each have one clear answer?
+
+B. Minimality
+   Can the counterfactual query be obtained by replacing exactly the
+   annotated span, without any other changes?
+
+C. Answer change
+   Are the two final answers meaningfully different?
+
+D. Causal relevance
+   Does the edited detail explain the answer change?
+   Would restoring the original detail restore the original answer?
+
+E. Reasoning consistency
+   Does each explanation follow from its own query and support its own answer?
+
+F. No hidden assumptions
+   Does the solution depend on an unstated event, intention, mechanism,
+   observation, or rule? If so, repair or discard the pair.
+
+G. No answer leakage
+   Does the query avoid directly stating what the answer to the question is?
+
+H. Nontriviality
+   Is some inference needed beyond identifying a repeated word?
+
+I. Diversity
+   Does this pair add a meaningfully different situation or reasoning
+   structure compared with the other pairs?
+
+Revise or replace any pair that fails a check.
+These checks are self-review, not independent human validation.
+
+OUTPUT FORMAT
+
+Return one valid JSON object and nothing else.
+Do not include Markdown fences, commentary, or a description of your process.
+
+Use this schema:
+
+{
+  "dataset_name": "everyday_counterfactual_reasoning",
+  "batch_id": "batch_001",
+  "pairs": [
+    {
+      "pair_id": "batch_001_001",
+      "category": "beliefs_and_information_access",
+      "difficulty": "easy",
+      "original": {
+        "query": "Complete situation followed by the question.",
+        "reasoning": [
+          "First reference reasoning step.",
+          "Second reference reasoning step.",
+          "Third reference reasoning step, if needed."
+        ],
+        "final_answer": "Short answer"
+      },
+      "counterfactual": {
+        "query": "Minimally edited situation followed by the identical question.",
+        "reasoning": [
+          "First reference reasoning step.",
+          "Second reference reasoning step.",
+          "Third reference reasoning step, if needed."
+        ],
+        "final_answer": "Different short answer"
+      },
+      "edit": {
+        "original_span": "Exact text replaced in the original query.",
+        "counterfactual_span": "Exact replacement text.",
+        "changed_variable": "The event, condition, observation, or relation changed."
+      },
+      "reasoning_change": {
+        "shared_basis": "Relevant information or reasoning that remains unchanged.",
+        "original_decisive_inference": "The inference supported in the original.",
+        "counterfactual_decisive_inference": "The inference supported after the edit.",
+        "why_the_answer_changes": "A brief explanation connecting the edit to the answer change."
+      }
+    }
+  ]
+}
+
+Allowed category values:
+- beliefs_and_information_access
+- object_locations_and_states
+- rules_permissions_and_prerequisites
+- temporal_and_event_order
+- explicit_causal_mechanisms
+
+Allowed difficulty values:
+- easy
+- moderate
+
+Generate exactly 20 pairs.

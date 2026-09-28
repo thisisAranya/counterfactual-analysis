@@ -1,0 +1,686 @@
+{
+  "dataset_name": "everyday_counterfactual_reasoning",
+  "batch_id": "batch_001",
+  "pairs": [
+    {
+      "pair_id": "batch_001_001",
+      "category": "beliefs_and_information_access",
+      "difficulty": "easy",
+      "original": {
+        "query": "Priya leaves a note telling her roommate Leo that the spare key is under the doormat. Before Leo gets home, Priya moves the key into the mailbox and texts Leo about the move. Leo reads the text before arriving. Where does Leo believe the spare key is when he arrives?",
+        "reasoning": [
+          "The note tells Leo that the key is under the doormat.",
+          "Priya's text tells him the key has been moved to the mailbox, and he reads it before arriving.",
+          "The text is newer information, so Leo believes the key is in the mailbox."
+        ],
+        "final_answer": "In the mailbox"
+      },
+      "counterfactual": {
+        "query": "Priya leaves a note telling her roommate Leo that the spare key is under the doormat. Before Leo gets home, Priya moves the key into the mailbox and texts Leo about the move. Leo's phone is switched off, so he never sees the text. Where does Leo believe the spare key is when he arrives?",
+        "reasoning": [
+          "The note tells Leo that the key is under the doormat.",
+          "Leo never sees the text about the move, so nothing gives him a reason to update what the note said.",
+          "Leo therefore believes the key is still under the doormat."
+        ],
+        "final_answer": "Under the doormat"
+      },
+      "edit": {
+        "original_span": "Leo reads the text before arriving.",
+        "counterfactual_span": "Leo's phone is switched off, so he never sees the text.",
+        "changed_variable": "Whether Leo receives the message about the key being moved."
+      },
+      "reasoning_change": {
+        "shared_basis": "The note says the key is under the doormat, and the key is actually moved to the mailbox.",
+        "original_decisive_inference": "Leo gets the update and revises his belief.",
+        "counterfactual_decisive_inference": "Leo gets no update and keeps the belief from the note.",
+        "why_the_answer_changes": "Leo's belief tracks the latest information he actually receives, and the edit decides whether the update reaches him."
+      }
+    },
+    {
+      "pair_id": "batch_001_002",
+      "category": "beliefs_and_information_access",
+      "difficulty": "easy",
+      "original": {
+        "query": "The weekly team meeting is booked in the garden room. On Monday, the organizer moves it to the library room and emails the change to everyone on the team mailing list. Karim is not on the team mailing list. Nobody else mentions the change to him. Which room does Karim expect the meeting to be in?",
+        "reasoning": [
+          "Karim knows the meeting was originally booked in the garden room.",
+          "The change went out only by email to the mailing list, Karim is not on that list, and nobody tells him.",
+          "Karim has no information about the move, so he still expects the garden room."
+        ],
+        "final_answer": "The garden room"
+      },
+      "counterfactual": {
+        "query": "The weekly team meeting is booked in the garden room. On Monday, the organizer moves it to the library room and emails the change to everyone on the team mailing list. Karim is on the team mailing list and reads the email. Nobody else mentions the change to him. Which room does Karim expect the meeting to be in?",
+        "reasoning": [
+          "Karim knows the meeting was originally booked in the garden room.",
+          "He is on the mailing list and reads the email announcing the move to the library room.",
+          "He updates his expectation, so he expects the meeting in the library room."
+        ],
+        "final_answer": "The library room"
+      },
+      "edit": {
+        "original_span": "Karim is not on the team mailing list.",
+        "counterfactual_span": "Karim is on the team mailing list and reads the email.",
+        "changed_variable": "Whether Karim is someone the announcement actually reaches."
+      },
+      "reasoning_change": {
+        "shared_basis": "The meeting was moved from the garden room to the library room, and the change was announced only by email to the list.",
+        "original_decisive_inference": "The announcement never reaches Karim.",
+        "counterfactual_decisive_inference": "The announcement reaches Karim and he reads it.",
+        "why_the_answer_changes": "Whether Karim belongs to the group the email went to decides whether he learns about the new room."
+      }
+    },
+    {
+      "pair_id": "batch_001_003",
+      "category": "beliefs_and_information_access",
+      "difficulty": "easy",
+      "original": {
+        "query": "Sofia is expecting a package. The courier leaves it with her neighbor Ben and puts a slip in Sofia's mailbox saying where the package is. Sofia checks her mailbox that evening and reads the slip. She hears nothing else about the delivery. That evening, where does Sofia think her package is?",
+        "reasoning": [
+          "The courier's slip says the package is with Ben.",
+          "Sofia reads the slip that evening, so she learns where it was left.",
+          "She therefore thinks the package is with her neighbor Ben."
+        ],
+        "final_answer": "With her neighbor Ben"
+      },
+      "counterfactual": {
+        "query": "Sofia is expecting a package. The courier leaves it with her neighbor Ben and puts a slip in Sofia's mailbox saying where the package is. Sofia does not check her mailbox that evening. She hears nothing else about the delivery. That evening, where does Sofia think her package is?",
+        "reasoning": [
+          "The only information about the delivery is the slip in her mailbox.",
+          "Sofia does not check her mailbox and hears nothing else, so she does not know the package has arrived.",
+          "She therefore thinks the package is still on its way with the courier."
+        ],
+        "final_answer": "Still with the courier"
+      },
+      "edit": {
+        "original_span": "Sofia checks her mailbox that evening and reads the slip.",
+        "counterfactual_span": "Sofia does not check her mailbox that evening.",
+        "changed_variable": "Whether Sofia reads the only notice about the delivery."
+      },
+      "reasoning_change": {
+        "shared_basis": "The package is with Ben, and the only notice of this is the slip in the mailbox.",
+        "original_decisive_inference": "Sofia reads the slip and learns the package is with Ben.",
+        "counterfactual_decisive_inference": "Sofia does not know the delivery happened, so she thinks the package is still in transit.",
+        "why_the_answer_changes": "The edit decides whether Sofia sees the only evidence that the package was delivered to Ben."
+      }
+    },
+    {
+      "pair_id": "batch_001_004",
+      "category": "beliefs_and_information_access",
+      "difficulty": "moderate",
+      "original": {
+        "query": "In the morning, the club whiteboard says that practice is on the north field. After lunch, the coach erases that and writes that practice is on the south field. Mia reads the whiteboard at the end of the day. She gets no other information about practice. Which field does Mia believe practice is on?",
+        "reasoning": [
+          "The whiteboard says north field in the morning and south field after lunch.",
+          "Mia reads it at the end of the day, which is after the coach's change.",
+          "She sees the updated message, so she believes practice is on the south field."
+        ],
+        "final_answer": "The south field"
+      },
+      "counterfactual": {
+        "query": "In the morning, the club whiteboard says that practice is on the north field. After lunch, the coach erases that and writes that practice is on the south field. Mia reads the whiteboard early in the morning. She gets no other information about practice. Which field does Mia believe practice is on?",
+        "reasoning": [
+          "The whiteboard says north field in the morning and south field after lunch.",
+          "Mia reads it early in the morning, before the coach's change, and gets no later information.",
+          "She only saw the old message, so she believes practice is on the north field."
+        ],
+        "final_answer": "The north field"
+      },
+      "edit": {
+        "original_span": "Mia reads the whiteboard at the end of the day.",
+        "counterfactual_span": "Mia reads the whiteboard early in the morning.",
+        "changed_variable": "Whether Mia reads the whiteboard before or after it is updated."
+      },
+      "reasoning_change": {
+        "shared_basis": "The whiteboard's message changes from north field to south field after lunch.",
+        "original_decisive_inference": "Mia reads the board after the change and sees the south field.",
+        "counterfactual_decisive_inference": "Mia reads the board before the change and sees only the north field.",
+        "why_the_answer_changes": "When Mia reads the board decides which version of the message she saw."
+      }
+    },
+    {
+      "pair_id": "batch_001_005",
+      "category": "object_locations_and_states",
+      "difficulty": "moderate",
+      "original": {
+        "query": "Nadia puts her ring in a small pouch and puts the pouch in her coat pocket. She hangs the coat in the hallway closet. Later, she takes the pouch out of the coat and puts it in her desk drawer. Nothing else is moved. Where is Nadia's ring?",
+        "reasoning": [
+          "The ring is inside the pouch, and the pouch starts out in the coat pocket.",
+          "Nadia takes the pouch out of the coat and puts it in the desk drawer, so the ring moves with it.",
+          "The ring is therefore in the desk drawer, inside the pouch."
+        ],
+        "final_answer": "In the desk drawer"
+      },
+      "counterfactual": {
+        "query": "Nadia puts her ring in a small pouch and puts the pouch in her coat pocket. She hangs the coat in the hallway closet. Later, she takes the coat out of the closet and puts it in her car. Nothing else is moved. Where is Nadia's ring?",
+        "reasoning": [
+          "The ring is inside the pouch, and the pouch is in the coat pocket.",
+          "Nadia moves the whole coat to her car without taking the pouch out, so the pouch and ring move with the coat.",
+          "The ring is therefore in her car, in the coat pocket."
+        ],
+        "final_answer": "In her car"
+      },
+      "edit": {
+        "original_span": "takes the pouch out of the coat and puts it in her desk drawer",
+        "counterfactual_span": "takes the coat out of the closet and puts it in her car",
+        "changed_variable": "Which container is moved, and where it goes."
+      },
+      "reasoning_change": {
+        "shared_basis": "The ring is inside the pouch, and the pouch is inside the coat pocket.",
+        "original_decisive_inference": "The pouch is taken out of the coat, so the ring leaves the coat and goes to the drawer.",
+        "counterfactual_decisive_inference": "The coat moves with the pouch still inside, so the ring goes to the car.",
+        "why_the_answer_changes": "Contents move with their container, so which container moves decides where the ring ends up."
+      }
+    },
+    {
+      "pair_id": "batch_001_006",
+      "category": "object_locations_and_states",
+      "difficulty": "easy",
+      "original": {
+        "query": "Theo puts an ice cube on a small plate. He leaves the plate on the sunny kitchen counter all afternoon. Nobody touches the plate. In the evening, what does Theo find on the plate?",
+        "reasoning": [
+          "An ice cube sits on a plate for the whole afternoon.",
+          "A sunny kitchen counter is well above freezing, so the ice melts over several hours.",
+          "Theo finds water on the plate instead of an ice cube."
+        ],
+        "final_answer": "A puddle of water"
+      },
+      "counterfactual": {
+        "query": "Theo puts an ice cube on a small plate. He leaves the plate in the freezer all afternoon. Nobody touches the plate. In the evening, what does Theo find on the plate?",
+        "reasoning": [
+          "An ice cube sits on a plate for the whole afternoon.",
+          "A freezer stays below freezing, so the ice does not melt.",
+          "Theo still finds the ice cube on the plate."
+        ],
+        "final_answer": "An ice cube"
+      },
+      "edit": {
+        "original_span": "on the sunny kitchen counter",
+        "counterfactual_span": "in the freezer",
+        "changed_variable": "The temperature of the place where the ice cube is left."
+      },
+      "reasoning_change": {
+        "shared_basis": "An ice cube is left undisturbed on a plate for an afternoon.",
+        "original_decisive_inference": "The warm location melts the ice.",
+        "counterfactual_decisive_inference": "The cold location keeps the ice frozen.",
+        "why_the_answer_changes": "Whether the surroundings are above or below freezing decides whether the ice melts."
+      }
+    },
+    {
+      "pair_id": "batch_001_007",
+      "category": "object_locations_and_states",
+      "difficulty": "moderate",
+      "original": {
+        "query": "Rosa's keyring holds her house key and her bike key. She removes the bike key from the ring and keeps it in her pocket. She then lends the keyring to Sam for the afternoon. Who has Rosa's house key that afternoon?",
+        "reasoning": [
+          "The keyring starts with both the house key and the bike key.",
+          "Rosa takes only the bike key off, so the house key stays on the ring.",
+          "The ring goes to Sam, so Sam has the house key."
+        ],
+        "final_answer": "Sam"
+      },
+      "counterfactual": {
+        "query": "Rosa's keyring holds her house key and her bike key. She removes the house key from the ring and keeps it in her pocket. She then lends the keyring to Sam for the afternoon. Who has Rosa's house key that afternoon?",
+        "reasoning": [
+          "The keyring starts with both the house key and the bike key.",
+          "Rosa takes the house key off and keeps it in her pocket, so it is no longer on the ring.",
+          "Only the ring goes to Sam, so Rosa still has the house key."
+        ],
+        "final_answer": "Rosa"
+      },
+      "edit": {
+        "original_span": "removes the bike key",
+        "counterfactual_span": "removes the house key",
+        "changed_variable": "Which key is detached from the ring before it is lent."
+      },
+      "reasoning_change": {
+        "shared_basis": "The ring holds both keys, one key is removed and kept by Rosa, and the ring goes to Sam.",
+        "original_decisive_inference": "The house key stays attached and goes to Sam with the ring.",
+        "counterfactual_decisive_inference": "The house key is detached and stays with Rosa.",
+        "why_the_answer_changes": "Only keys still on the ring go to Sam, so which key is removed decides who holds the house key."
+      }
+    },
+    {
+      "pair_id": "batch_001_008",
+      "category": "object_locations_and_states",
+      "difficulty": "easy",
+      "original": {
+        "query": "Kai fills a water bottle to the top and leaves the cap off. He lays the bottle on its side in his backpack next to his notebooks. He then walks to school. When he arrives, are his notebooks wet or dry?",
+        "reasoning": [
+          "The bottle is full and lies on its side next to the notebooks.",
+          "With the cap off, water flows out of an open bottle lying on its side.",
+          "The spilled water soaks the notebooks beside it, so they are wet."
+        ],
+        "final_answer": "Wet"
+      },
+      "counterfactual": {
+        "query": "Kai fills a water bottle to the top and screws the cap on tightly. He lays the bottle on its side in his backpack next to his notebooks. He then walks to school. When he arrives, are his notebooks wet or dry?",
+        "reasoning": [
+          "The bottle is full and lies on its side next to the notebooks.",
+          "A tightly closed cap keeps the water inside even when the bottle is on its side.",
+          "No water reaches the notebooks, so they stay dry."
+        ],
+        "final_answer": "Dry"
+      },
+      "edit": {
+        "original_span": "leaves the cap off",
+        "counterfactual_span": "screws the cap on tightly",
+        "changed_variable": "Whether the bottle is sealed."
+      },
+      "reasoning_change": {
+        "shared_basis": "A full bottle lies on its side beside the notebooks during the walk.",
+        "original_decisive_inference": "The open bottle spills water onto the notebooks.",
+        "counterfactual_decisive_inference": "The sealed bottle keeps the water in.",
+        "why_the_answer_changes": "Whether the bottle is sealed decides whether water can get out and reach the notebooks."
+      }
+    },
+    {
+      "pair_id": "batch_001_009",
+      "category": "rules_permissions_and_prerequisites",
+      "difficulty": "moderate",
+      "original": {
+        "query": "At the community pool, only swimmers wearing a green wristband may use the deep lane. Staff give a green wristband only to swimmers who pass the swim test. Finn failed the swim test this morning. May Finn use the deep lane today?",
+        "reasoning": [
+          "Using the deep lane requires a green wristband.",
+          "Wristbands go only to swimmers who pass the test, and Finn failed, so he has no wristband.",
+          "Without a wristband, Finn may not use the deep lane."
+        ],
+        "final_answer": "No"
+      },
+      "counterfactual": {
+        "query": "At the community pool, only swimmers wearing a green wristband may use the deep lane. Staff give a green wristband only to swimmers who pass the swim test. Finn passed the swim test this morning and was given his wristband. May Finn use the deep lane today?",
+        "reasoning": [
+          "Using the deep lane requires a green wristband.",
+          "Finn passed the swim test and received a wristband, so he meets the requirement.",
+          "Finn may therefore use the deep lane."
+        ],
+        "final_answer": "Yes"
+      },
+      "edit": {
+        "original_span": "Finn failed the swim test this morning.",
+        "counterfactual_span": "Finn passed the swim test this morning and was given his wristband.",
+        "changed_variable": "Whether Finn met the prerequisite for getting a wristband."
+      },
+      "reasoning_change": {
+        "shared_basis": "Deep-lane access requires a wristband, and wristbands require passing the test.",
+        "original_decisive_inference": "Failing the test means Finn has no wristband.",
+        "counterfactual_decisive_inference": "Passing the test gives Finn a wristband.",
+        "why_the_answer_changes": "The test result decides whether Finn has the wristband, and the wristband decides access."
+      }
+    },
+    {
+      "pair_id": "batch_001_010",
+      "category": "rules_permissions_and_prerequisites",
+      "difficulty": "easy",
+      "original": {
+        "query": "In the Okafor household, Chidi and Ngozi are the only adults. Their rule is that whoever cooks dinner does not wash the dishes, and the other adult does. Tonight, Chidi cooks dinner. Who washes the dishes tonight?",
+        "reasoning": [
+          "The rule says the cook does not wash the dishes; the other adult does.",
+          "Chidi cooks tonight, so Chidi is excused.",
+          "The only other adult is Ngozi, so Ngozi washes the dishes."
+        ],
+        "final_answer": "Ngozi"
+      },
+      "counterfactual": {
+        "query": "In the Okafor household, Chidi and Ngozi are the only adults. Their rule is that whoever cooks dinner does not wash the dishes, and the other adult does. Tonight, Ngozi cooks dinner. Who washes the dishes tonight?",
+        "reasoning": [
+          "The rule says the cook does not wash the dishes; the other adult does.",
+          "Ngozi cooks tonight, so Ngozi is excused.",
+          "The only other adult is Chidi, so Chidi washes the dishes."
+        ],
+        "final_answer": "Chidi"
+      },
+      "edit": {
+        "original_span": "Tonight, Chidi cooks dinner.",
+        "counterfactual_span": "Tonight, Ngozi cooks dinner.",
+        "changed_variable": "Which adult cooks dinner."
+      },
+      "reasoning_change": {
+        "shared_basis": "There are two adults, and the rule gives dishwashing to the one who did not cook.",
+        "original_decisive_inference": "Chidi is excused as the cook, leaving Ngozi.",
+        "counterfactual_decisive_inference": "Ngozi is excused as the cook, leaving Chidi.",
+        "why_the_answer_changes": "The rule assigns the dishes to the non-cook, so changing the cook changes who washes."
+      }
+    },
+    {
+      "pair_id": "batch_001_011",
+      "category": "rules_permissions_and_prerequisites",
+      "difficulty": "easy",
+      "original": {
+        "query": "The public library lends laptops only to people who have a library card and have signed the device agreement. Wen has a library card. Wen signed the device agreement at the front desk. Can Wen borrow a laptop?",
+        "reasoning": [
+          "Borrowing a laptop requires both a library card and a signed device agreement.",
+          "Wen has a card and has signed the agreement, so both conditions are met.",
+          "Wen can therefore borrow a laptop."
+        ],
+        "final_answer": "Yes"
+      },
+      "counterfactual": {
+        "query": "The public library lends laptops only to people who have a library card and have signed the device agreement. Wen has a library card. Wen left the front desk before signing the device agreement. Can Wen borrow a laptop?",
+        "reasoning": [
+          "Borrowing a laptop requires both a library card and a signed device agreement.",
+          "Wen has a card but did not sign the agreement, so one condition is missing.",
+          "Wen therefore cannot borrow a laptop."
+        ],
+        "final_answer": "No"
+      },
+      "edit": {
+        "original_span": "Wen signed the device agreement at the front desk.",
+        "counterfactual_span": "Wen left the front desk before signing the device agreement.",
+        "changed_variable": "Whether the second required condition (the signed agreement) is met."
+      },
+      "reasoning_change": {
+        "shared_basis": "Both a card and a signed agreement are required, and Wen has a card.",
+        "original_decisive_inference": "The agreement is signed, so all requirements are met.",
+        "counterfactual_decisive_inference": "The agreement is unsigned, so a requirement is missing.",
+        "why_the_answer_changes": "Both conditions are required, so the missing signature alone blocks borrowing."
+      }
+    },
+    {
+      "pair_id": "batch_001_012",
+      "category": "rules_permissions_and_prerequisites",
+      "difficulty": "moderate",
+      "original": {
+        "query": "A rental scooter starts only after the rider scans their ID and then accepts the safety terms in the app. Bea opens the app beside a scooter. She scans her ID, but the app closes before she accepts the safety terms. She does not reopen the app. Will the scooter start for Bea?",
+        "reasoning": [
+          "The scooter needs two completed steps: an ID scan, then accepting the safety terms.",
+          "Bea finishes the scan, but the app closes before she accepts the terms, and she does not reopen it.",
+          "The second step is never completed, so the scooter will not start."
+        ],
+        "final_answer": "No"
+      },
+      "counterfactual": {
+        "query": "A rental scooter starts only after the rider scans their ID and then accepts the safety terms in the app. Bea opens the app beside a scooter. She scans her ID and then accepts the safety terms. She does not reopen the app. Will the scooter start for Bea?",
+        "reasoning": [
+          "The scooter needs two completed steps: an ID scan, then accepting the safety terms.",
+          "Bea scans her ID and then accepts the terms, completing both steps in the required order.",
+          "All prerequisites are satisfied, so the scooter will start."
+        ],
+        "final_answer": "Yes"
+      },
+      "edit": {
+        "original_span": "She scans her ID, but the app closes before she accepts the safety terms.",
+        "counterfactual_span": "She scans her ID and then accepts the safety terms.",
+        "changed_variable": "Whether the second required step is completed."
+      },
+      "reasoning_change": {
+        "shared_basis": "The scooter needs an ID scan followed by accepting the terms, and Bea scans her ID.",
+        "original_decisive_inference": "The terms are never accepted, so the sequence is incomplete.",
+        "counterfactual_decisive_inference": "The terms are accepted after the scan, so the sequence is complete.",
+        "why_the_answer_changes": "The scooter starts only when every required step is done, and the edit decides whether the final step happens."
+      }
+    },
+    {
+      "pair_id": "batch_001_013",
+      "category": "temporal_and_event_order",
+      "difficulty": "easy",
+      "original": {
+        "query": "The last bus to the village leaves from a stop inside the train station at dusk. There are no later buses that night. Ruth's train pulls into the station shortly before dusk. Can Ruth catch a bus to the village that night?",
+        "reasoning": [
+          "The last bus leaves at dusk from a stop inside the station.",
+          "Ruth arrives shortly before dusk, while the last bus has not yet left.",
+          "She can reach the stop in time, so she can catch the bus."
+        ],
+        "final_answer": "Yes"
+      },
+      "counterfactual": {
+        "query": "The last bus to the village leaves from a stop inside the train station at dusk. There are no later buses that night. Ruth's train pulls into the station well after dark. Can Ruth catch a bus to the village that night?",
+        "reasoning": [
+          "The last bus leaves at dusk from a stop inside the station.",
+          "Ruth arrives well after dark, which is after the last bus has already left.",
+          "With no later buses, she cannot catch a bus that night."
+        ],
+        "final_answer": "No"
+      },
+      "edit": {
+        "original_span": "shortly before dusk",
+        "counterfactual_span": "well after dark",
+        "changed_variable": "Whether Ruth arrives before or after the last bus leaves."
+      },
+      "reasoning_change": {
+        "shared_basis": "The last bus leaves at dusk and there are no later buses.",
+        "original_decisive_inference": "Ruth arrives before the last departure.",
+        "counterfactual_decisive_inference": "Ruth arrives after the last departure.",
+        "why_the_answer_changes": "The order of Ruth's arrival and the last bus's departure decides whether a bus is still available."
+      }
+    },
+    {
+      "pair_id": "batch_001_014",
+      "category": "temporal_and_event_order",
+      "difficulty": "moderate",
+      "original": {
+        "query": "Dev reads his email only at home, just before leaving, and never checks it anywhere else. He plans to go to a concert at the concert hall. The organizers send an email moving the concert to the city park, and it arrives an hour after Dev leaves home. Where does Dev go for the concert?",
+        "reasoning": [
+          "Dev only learns about email he reads at home before leaving.",
+          "The email about the park arrives after he has left, so he does not see it.",
+          "He follows his original plan and goes to the concert hall."
+        ],
+        "final_answer": "The concert hall"
+      },
+      "counterfactual": {
+        "query": "Dev reads his email only at home, just before leaving, and never checks it anywhere else. He plans to go to a concert at the concert hall. The organizers send an email moving the concert to the city park, and it arrives an hour before Dev leaves home. Where does Dev go for the concert?",
+        "reasoning": [
+          "Dev only learns about email he reads at home before leaving.",
+          "The email about the park arrives before he leaves, so he reads it during his usual check.",
+          "He changes his plan and goes to the city park."
+        ],
+        "final_answer": "The city park"
+      },
+      "edit": {
+        "original_span": "an hour after Dev leaves home",
+        "counterfactual_span": "an hour before Dev leaves home",
+        "changed_variable": "Whether the change notice arrives before or after Dev's only email check."
+      },
+      "reasoning_change": {
+        "shared_basis": "Dev checks email only at home right before leaving, and the concert was moved by email.",
+        "original_decisive_inference": "The notice arrives too late for Dev to see it.",
+        "counterfactual_decisive_inference": "The notice arrives in time for Dev's check.",
+        "why_the_answer_changes": "The email's arrival time relative to Dev's departure decides whether he learns about the new venue."
+      }
+    },
+    {
+      "pair_id": "batch_001_015",
+      "category": "temporal_and_event_order",
+      "difficulty": "easy",
+      "original": {
+        "query": "Workers paint the bench at the park entrance in the late morning, and the paint stays wet until evening. Nothing covers the bench. Lucia sits on the bench at lunchtime. Does Lucia get paint on her clothes from the bench?",
+        "reasoning": [
+          "The bench is painted in the late morning and stays wet until evening.",
+          "Lunchtime comes after the painting and before evening, so the paint is still wet when Lucia sits.",
+          "Sitting on wet paint transfers it to her clothes."
+        ],
+        "final_answer": "Yes"
+      },
+      "counterfactual": {
+        "query": "Workers paint the bench at the park entrance in the late morning, and the paint stays wet until evening. Nothing covers the bench. Lucia sits on the bench at dawn. Does Lucia get paint on her clothes from the bench?",
+        "reasoning": [
+          "The bench is painted in the late morning and stays wet until evening.",
+          "Dawn comes before the workers paint, so there is no fresh paint when Lucia sits.",
+          "No wet paint can get on her clothes."
+        ],
+        "final_answer": "No"
+      },
+      "edit": {
+        "original_span": "at lunchtime",
+        "counterfactual_span": "at dawn",
+        "changed_variable": "Whether Lucia sits during the wet-paint period or before painting begins."
+      },
+      "reasoning_change": {
+        "shared_basis": "The paint is wet from the late morning until evening.",
+        "original_decisive_inference": "Lucia sits while the paint is wet.",
+        "counterfactual_decisive_inference": "Lucia sits before the paint is applied.",
+        "why_the_answer_changes": "When Lucia sits relative to the painting decides whether she touches wet paint."
+      }
+    },
+    {
+      "pair_id": "batch_001_016",
+      "category": "temporal_and_event_order",
+      "difficulty": "moderate",
+      "original": {
+        "query": "Ilya writes the apartment's Wi-Fi password on a sticky note. Later that day, the landlord changes the Wi-Fi password. The password is not changed again. The next morning, Ilya's guest tries to connect using the password on the sticky note. Does the guest's attempt succeed?",
+        "reasoning": [
+          "The note records whatever the password was when Ilya wrote it.",
+          "The landlord changes the password after the note is written, so the note shows the old password.",
+          "The old password no longer works, so the guest's attempt fails."
+        ],
+        "final_answer": "No"
+      },
+      "counterfactual": {
+        "query": "Ilya writes the apartment's Wi-Fi password on a sticky note. Earlier that day, the landlord changes the Wi-Fi password. The password is not changed again. The next morning, Ilya's guest tries to connect using the password on the sticky note. Does the guest's attempt succeed?",
+        "reasoning": [
+          "The note records whatever the password was when Ilya wrote it.",
+          "The landlord's change happens before the note is written, so the note shows the new password.",
+          "The password is not changed again, so the note's password still works and the attempt succeeds."
+        ],
+        "final_answer": "Yes"
+      },
+      "edit": {
+        "original_span": "Later that day",
+        "counterfactual_span": "Earlier that day",
+        "changed_variable": "Whether the password change happens after or before the note is written."
+      },
+      "reasoning_change": {
+        "shared_basis": "The note captures the password at the time it is written, and there is one change.",
+        "original_decisive_inference": "The note holds the outdated password.",
+        "counterfactual_decisive_inference": "The note holds the current password.",
+        "why_the_answer_changes": "The order of writing and changing decides whether the note's password is still valid."
+      }
+    },
+    {
+      "pair_id": "batch_001_017",
+      "category": "explicit_causal_mechanisms",
+      "difficulty": "moderate",
+      "original": {
+        "query": "The porch light turns on only when its wall switch is on and its motion sensor detects movement. Before bed, the wall switch has been turned off. During the night, a cat walks across the porch in front of the sensor. Does the porch light turn on during the night?",
+        "reasoning": [
+          "The light needs both the switch on and detected movement.",
+          "The cat triggers the sensor, but the switch is off, so one condition fails.",
+          "The light therefore stays off."
+        ],
+        "final_answer": "No"
+      },
+      "counterfactual": {
+        "query": "The porch light turns on only when its wall switch is on and its motion sensor detects movement. Before bed, the wall switch has been left on. During the night, a cat walks across the porch in front of the sensor. Does the porch light turn on during the night?",
+        "reasoning": [
+          "The light needs both the switch on and detected movement.",
+          "The switch is on, and the cat walking in front of the sensor provides movement.",
+          "Both conditions are met, so the light turns on."
+        ],
+        "final_answer": "Yes"
+      },
+      "edit": {
+        "original_span": "has been turned off",
+        "counterfactual_span": "has been left on",
+        "changed_variable": "The state of the wall switch."
+      },
+      "reasoning_change": {
+        "shared_basis": "The light requires the switch on plus movement, and the cat provides movement.",
+        "original_decisive_inference": "The switch condition fails, blocking the light.",
+        "counterfactual_decisive_inference": "The switch condition holds, so the movement turns the light on.",
+        "why_the_answer_changes": "With movement present, the switch alone decides whether the mechanism can activate."
+      }
+    },
+    {
+      "pair_id": "batch_001_018",
+      "category": "explicit_causal_mechanisms",
+      "difficulty": "easy",
+      "original": {
+        "query": "The garden sprinkler is set to run at dawn unless its rain sensor is wet. It rains heavily overnight, soaking the rain sensor. The sensor is still wet at dawn. Does the sprinkler run at dawn?",
+        "reasoning": [
+          "The sprinkler skips its dawn run whenever the rain sensor is wet.",
+          "The overnight rain soaks the sensor, and it is still wet at dawn.",
+          "The skip condition is met, so the sprinkler does not run."
+        ],
+        "final_answer": "No"
+      },
+      "counterfactual": {
+        "query": "The garden sprinkler is set to run at dawn unless its rain sensor is wet. It rains heavily overnight, but a tarp keeps the rain sensor dry. The sensor is still dry at dawn. Does the sprinkler run at dawn?",
+        "reasoning": [
+          "The sprinkler skips its dawn run only if the rain sensor is wet.",
+          "Although it rains, the tarp keeps the sensor dry through dawn.",
+          "The skip condition is not met, so the sprinkler runs even though the garden got rain."
+        ],
+        "final_answer": "Yes"
+      },
+      "edit": {
+        "original_span": "soaking the rain sensor. The sensor is still wet at dawn.",
+        "counterfactual_span": "but a tarp keeps the rain sensor dry. The sensor is still dry at dawn.",
+        "changed_variable": "Whether the rain actually reaches the sensor."
+      },
+      "reasoning_change": {
+        "shared_basis": "The sprinkler's decision depends only on the sensor's state, and it rains overnight in both versions.",
+        "original_decisive_inference": "The sensor is wet, so the run is skipped.",
+        "counterfactual_decisive_inference": "The sensor is dry, so the run goes ahead despite the rain.",
+        "why_the_answer_changes": "The mechanism responds to the sensor, not to the weather itself, so shielding the sensor changes the outcome."
+      }
+    },
+    {
+      "pair_id": "batch_001_019",
+      "category": "explicit_causal_mechanisms",
+      "difficulty": "moderate",
+      "original": {
+        "query": "Noor's doorbell chimes when the button outside is pressed, but only while the indoor chime unit is plugged into the wall. Before a party, Noor charges her phone in a different outlet, leaving the chime unit plugged in. A guest presses the doorbell button. Does the doorbell chime?",
+        "reasoning": [
+          "The doorbell chimes on a button press only if the chime unit is plugged in.",
+          "Noor uses a different outlet for her phone, so the chime unit stays plugged in.",
+          "The guest's press therefore makes the doorbell chime."
+        ],
+        "final_answer": "Yes"
+      },
+      "counterfactual": {
+        "query": "Noor's doorbell chimes when the button outside is pressed, but only while the indoor chime unit is plugged into the wall. Before a party, Noor unplugs the chime unit so she can charge her phone in that outlet. A guest presses the doorbell button. Does the doorbell chime?",
+        "reasoning": [
+          "The doorbell chimes on a button press only if the chime unit is plugged in.",
+          "Noor unplugs the chime unit to use its outlet, so the unit has no power.",
+          "The guest's press cannot produce a chime."
+        ],
+        "final_answer": "No"
+      },
+      "edit": {
+        "original_span": "charges her phone in a different outlet, leaving the chime unit plugged in",
+        "counterfactual_span": "unplugs the chime unit so she can charge her phone in that outlet",
+        "changed_variable": "Whether the chime unit keeps its power."
+      },
+      "reasoning_change": {
+        "shared_basis": "A button press produces a chime only when the chime unit is plugged in, and a guest presses the button.",
+        "original_decisive_inference": "The chime unit stays powered.",
+        "counterfactual_decisive_inference": "The chime unit loses power.",
+        "why_the_answer_changes": "The button press can only cause a chime if the chime unit is powered, and the edit decides whether it is."
+      }
+    },
+    {
+      "pair_id": "batch_001_020",
+      "category": "explicit_causal_mechanisms",
+      "difficulty": "moderate",
+      "original": {
+        "query": "In Ana's house, a tripped breaker cuts power to every light on its circuit. The kitchen light and the garage light are on separate circuits. The garage circuit's breaker trips, and nobody resets it. When Ana flips the kitchen light switch, does the kitchen light come on?",
+        "reasoning": [
+          "A tripped breaker cuts power only to the lights on its own circuit.",
+          "The kitchen light is on a different circuit from the garage, so it still has power.",
+          "Flipping the kitchen switch turns the kitchen light on."
+        ],
+        "final_answer": "Yes"
+      },
+      "counterfactual": {
+        "query": "In Ana's house, a tripped breaker cuts power to every light on its circuit. The kitchen light and the garage light are on the same circuit. The garage circuit's breaker trips, and nobody resets it. When Ana flips the kitchen light switch, does the kitchen light come on?",
+        "reasoning": [
+          "A tripped breaker cuts power to every light on its circuit.",
+          "The kitchen light shares the garage's circuit, so the trip also cuts power to the kitchen light.",
+          "Flipping the switch cannot turn on a light with no power, so it stays off."
+        ],
+        "final_answer": "No"
+      },
+      "edit": {
+        "original_span": "on separate circuits",
+        "counterfactual_span": "on the same circuit",
+        "changed_variable": "Whether the kitchen light depends on the tripped circuit."
+      },
+      "reasoning_change": {
+        "shared_basis": "The garage circuit's breaker trips, and a trip cuts power to that circuit's lights.",
+        "original_decisive_inference": "The kitchen light is outside the affected circuit and keeps power.",
+        "counterfactual_decisive_inference": "The kitchen light is inside the affected circuit and loses power.",
+        "why_the_answer_changes": "The trip affects only its own circuit, so whether the kitchen shares that circuit decides whether its light works."
+      }
+    }
+  ]
+}
