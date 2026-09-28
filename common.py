@@ -49,11 +49,14 @@ def build_prompt(tokenizer, query, cfg):
     return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
 
-def load_model_and_tokenizer(cfg, device="cuda"):
+def load_model_and_tokenizer(cfg, device="cuda", attn_implementation=None):
+    """attn_implementation="eager" is needed wherever we differentiate through the model
+    (forward-mode AD is not supported by the fused SDPA kernels)."""
     name = cfg["model"]["name"]
     tokenizer = AutoTokenizer.from_pretrained(name)
+    kwargs = {"attn_implementation": attn_implementation} if attn_implementation else {}
     model = AutoModelForCausalLM.from_pretrained(
-        name, torch_dtype=getattr(torch, cfg["model"]["dtype"]), device_map=device
+        name, dtype=getattr(torch, cfg["model"]["dtype"]), device_map=device, **kwargs
     )
     model.eval()
     for p in model.parameters():

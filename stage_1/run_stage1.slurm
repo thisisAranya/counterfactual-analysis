@@ -36,6 +36,8 @@ VENV_DIR="${VENV_DIR:-$SLURM_SUBMIT_DIR/venv-qwen}"
 source "$VENV_DIR/bin/activate"
 
 # Check the cache; download only if the model is missing or incomplete.
+# Best practice: download once on the login node first (see download_model.py),
+# so this step only confirms the cache. Xet is disabled inside download_model.py.
 HF_HUB_OFFLINE=0 python -u download_model.py --model "$MODEL"
 
 export HF_HUB_OFFLINE=1

@@ -29,3 +29,23 @@ stage_1:
   divergence:
     percentile: 90
     margin: 16
+
+# Stage 2: soft rollout T_K(h) and reasoning metric G_R -- Algorithm 1, steps 3-4.
+# Stage 2 checks the machinery and measures fidelity, memory and time; it reads the
+# stage 1 outputs of the configured split.
+stage_2:
+  layer: 14                  # l: intervene on layer_l = output of decoder block l-1
+  measurement_layer: 20      # s_k = residual at this layer (same convention as Z(Q))
+  horizon_K_max: 256
+  horizon_per_query: true    # K = min(K_max, length of that query's real generation)
+  soft_temperature: 1.0      # T_s used for the gradient checks
+  fidelity:
+    temperatures: [0.25, 0.5, 1.0]   # soft rollouts to compare with the real greedy tokens
+    windows: [16, 32, 64, 128, 256]  # report agreement over the first N steps
+  grad_check:
+    num_queries: 2           # first N queries get the (slower) derivative checks
+    precision_check: true    # reload in fp32 and compare J_R v with the bf16 result
+    seed: 0
+  smoke:
+    num_queries: 1
+    horizon_K_max: 16
